@@ -48,7 +48,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       enum: ["user", "admin", "owner"],
-      default: "owner",
+      default: "user",
     },
   },
   {
@@ -65,7 +65,7 @@ export const validateUser = (body) => {
     username: Joi.string().required(),
     password: Joi.string().required(),
     age: Joi.number().allow(0),
-    url: Joi.string().allow(""),
+    url: Joi.string().allow("https://"),
     gender: Joi.string().valid("male", "female").required(),
     isActive: Joi.boolean().allow(true),
     budget: Joi.number().required(),

@@ -18,7 +18,7 @@ const SignIn = () => {
     if (isSuccess) {
       dispatch(setToken(data.payload.token));
       dispatch(setUser(data.payload.user));
-      navigate("/dashboard");
+      navigate("/dashboard/manage-blog");
     }
     if (isError) {
       <Alert

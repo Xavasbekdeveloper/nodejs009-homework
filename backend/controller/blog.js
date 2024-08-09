@@ -54,7 +54,7 @@ class BlogsController {
     try {
       const { id } = req.params;
       await Blogs.findByIdAndDelete(id);
-      res.status(201).json({
+      res.status(200).json({
         msg: "blog is deleted",
         variant: "success",
         payload: null,

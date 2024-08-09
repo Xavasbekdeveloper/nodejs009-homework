@@ -13,7 +13,7 @@ const CreateBlog = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      navigate("/dashboard/adminBlog");
+      navigate("/dashboard/manage-blog");
     }
   }, [isSuccess]);
 

@@ -31,12 +31,29 @@ export const userApi = api.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
+    updateUser: build.mutation({
+      query: ({ body, id }) => ({
+        url: `/users/${id}`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["User"],
+    }),
+    deleteUser: build.mutation({
+      query: (id) => ({
+        url: `/users/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
 export const {
+  useGetProfileQuery,
   useGetUsersQuery,
   useRegisterUserMutation,
   useSignInMutation,
-  useGetProfileQuery,
+  useUpdateUserMutation,
+  useDeleteUserMutation,
 } = userApi;

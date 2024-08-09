@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
 } from "@ant-design/icons";
 import { Button, Layout, Menu, theme } from "antd";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useGetProfileQuery } from "../../context/api/userApi";
+import { useDispatch } from "react-redux";
+import { logout } from "../../context/slices/authSlice";
 
 const { Header, Sider, Content } = Layout;
 
@@ -19,6 +20,14 @@ const Dashboard = () => {
   } = theme.useToken();
   const { data } = useGetProfileQuery();
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleLogOut = () => {
+    dispatch(logout());
+    navigate("/login");
+  };
+
   return (
     <Layout className="h-screen">
       <Sider
@@ -27,7 +36,6 @@ const Dashboard = () => {
         collapsed={collapsed}
         className="fixed top-0 left-0 h-screen z-50 py-3"
       >
-        <div className="demo-logo-vertical" />
         <Menu
           theme="dark"
           mode="inline"
@@ -36,7 +44,7 @@ const Dashboard = () => {
             {
               key: "1",
               icon: (
-                <NavLink to={"adminBlog"}>
+                <NavLink to={"manage-blog"}>
                   <UserOutlined />
                 </NavLink>
               ),
@@ -45,14 +53,46 @@ const Dashboard = () => {
             {
               key: "2",
               icon: (
-                <NavLink to={"createBlog"}>
+                <NavLink to={"create-blog"}>
                   <VideoCameraOutlined />
                 </NavLink>
               ),
               label: "Create blog",
             },
+            data?.payload?.role === "owner" ? (
+              {
+                key: "3",
+                icon: (
+                  <NavLink to={"manage-user"}>
+                    <UserOutlined />
+                  </NavLink>
+                ),
+                label: "Manage user",
+              }
+            ) : (
+              <></>
+            ),
+            data?.payload?.role === "owner" ? (
+              {
+                key: "4",
+                icon: (
+                  <NavLink to={"create-user"}>
+                    <VideoCameraOutlined />
+                  </NavLink>
+                ),
+                label: "Create user",
+              }
+            ) : (
+              <></>
+            ),
           ]}
         />
+        <button
+          onClick={handleLogOut}
+          className="text-white absolute bottom-5 left-5"
+        >
+          Log out
+        </button>
       </Sider>
       <Layout className={`ml-${collapsed ? "20" : "200"} transition-all`}>
         <Header

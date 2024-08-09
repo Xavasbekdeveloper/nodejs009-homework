@@ -12,10 +12,24 @@ router.patch("/api/blogs/:id", BlogsController.updateBlog);
 router.delete("/api/blogs/:id", BlogsController.delete);
 
 router.get("/api/profile", [auth], UsersController.getProfile);
-router.get("/api/users", UsersController.getAllUsers);
-router.get("/api/users/search", UsersController.getUserSearch);
+
+router.get("/api/users", [auth, ownerMiddleware], UsersController.getAllUsers);
+router.get(
+  "/api/users/search",
+  [auth, ownerMiddleware],
+  UsersController.getUserSearch
+);
 router.post("/api/users/sign-up", UsersController.registerUser);
 router.post("/api/users/sign-in", UsersController.loginUser);
-router.patch("/api/users/:id", UsersController.updateUser);
+router.delete(
+  "/api/users/:id",
+  [auth, ownerMiddleware],
+  UsersController.deleteUser
+);
+router.patch(
+  "/api/users/:id",
+  [auth, ownerMiddleware],
+  UsersController.updateUser
+);
 
 export default router;

@@ -62,7 +62,33 @@ class UsersController {
     const id = req.user._id;
     console.log(typeof id);
   }
-  async updateProfile() {}
+  async getAllUsers(req, res) {
+    try {
+      const users = await Users.find({ role: { $ne: "owner" } }).sort({
+        createdAt: -1,
+      });
+
+      if (!users.length) {
+        res.status(400).json({
+          msg: "Users not found",
+          variant: "error",
+          payload: [],
+        });
+      }
+
+      res.status(200).json({
+        msg: "Users fetched successfully",
+        variant: "success",
+        payload: users,
+      });
+    } catch (err) {
+      res.status(500).json({
+        msg: err.message,
+        variant: "error",
+        payload: null,
+      });
+    }
+  }
   async registerUser(req, res) {
     try {
       const { error } = validateUser(req.body);
@@ -134,22 +160,6 @@ class UsersController {
       payload: { token, user },
     });
   }
-  async getAllUsers(req, res) {
-    try {
-      const users = await Users.find().sort({ createdAt: -1 });
-      res.status(200).json({
-        msg: "Users fetched successfully",
-        variant: "success",
-        payload: users,
-      });
-    } catch (err) {
-      res.status(500).json({
-        msg: err.message,
-        variant: "error",
-        payload: null,
-      });
-    }
-  }
   async updateUser(req, res) {
     try {
       const { id } = req.params;
@@ -173,6 +183,24 @@ class UsersController {
     } catch (err) {
       res.status(500).json({
         msg: err.message,
+        variant: "error",
+        payload: null,
+      });
+    }
+  }
+  async deleteUser(req, res) {
+    try {
+      const { id } = req.params;
+
+      const user = await Users.findByIdAndDelete(id, { new: true });
+      res.status(200).json({
+        msg: "user deleted",
+        variant: "success",
+        payload: user,
+      });
+    } catch {
+      res.status(500).json({
+        msg: "server error",
         variant: "error",
         payload: null,
       });
