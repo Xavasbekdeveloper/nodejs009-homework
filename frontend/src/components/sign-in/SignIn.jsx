@@ -1,15 +1,18 @@
 import React, { useEffect } from "react";
-import { Button, Form, Input } from "antd";
+import { Button, Checkbox, Form, Input } from "antd";
 import { useSignInMutation } from "../../context/api/userApi";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setToken, setUser } from "../../context/slices/authSlice";
+import { useNavigate } from "react-router-dom";
+import { Alert } from "antd";
 
 const SignIn = () => {
+  const [signIn, { data, isSuccess, error, isError, isLoading }] =
+    useSignInMutation();
+  console.log(data);
+  console.log(error);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [login, { data, isError, isLoading, isSuccess, error }] =
-    useSignInMutation();
 
   useEffect(() => {
     if (isSuccess) {
@@ -17,26 +20,37 @@ const SignIn = () => {
       dispatch(setUser(data.payload.user));
       navigate("/dashboard");
     }
-  }, [isSuccess]);
+    if (isError) {
+      <Alert
+        message="Error"
+        description="This is an error message about copywriting."
+        type="error"
+        showIcon
+      />;
+    }
+  }, [isSuccess, isError]);
 
-  const handleLogin = (values) => {
-    login(values);
+  const handleSubmit = (values) => {
+    signIn(values);
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
   return (
-    <div className="p-4 flex items-center justify-center min-h-screen flex-col gap-4">
+    <div className="max-sm:p-4 flex items-center justify-center min-h-screen flex-col gap-4">
       <h2 className="text-2xl font-medium">Sign in</h2>
       <Form
         name="basic"
         layout="vertical"
         className="w-96 max-sm:w-full"
+        labelCol={{
+          span: 8,
+        }}
         initialValues={{
           remember: true,
         }}
-        onFinish={handleLogin}
+        onFinish={handleSubmit}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
@@ -50,7 +64,7 @@ const SignIn = () => {
             },
           ]}
         >
-          <Input />
+          <Input placeholder="john33" />
         </Form.Item>
 
         <Form.Item
@@ -63,12 +77,17 @@ const SignIn = () => {
             },
           ]}
         >
-          <Input.Password />
+          <Input.Password placeholder="12345678" />
         </Form.Item>
 
         <Form.Item>
-          <Button className="w-full" type="primary" htmlType="submit">
-            Sign in
+          <Button
+            disabled={isLoading}
+            className="w-full"
+            type="primary"
+            htmlType="submit"
+          >
+            {isLoading ? "Loading..." : "Sign in"}
           </Button>
         </Form.Item>
       </Form>

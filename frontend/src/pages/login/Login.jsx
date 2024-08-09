@@ -3,9 +3,9 @@ import SignIn from "../../components/sign-in/SignIn";
 
 const Login = () => {
   return (
-    <>
+    <div>
       <SignIn />
-    </>
+    </div>
   );
 };
 

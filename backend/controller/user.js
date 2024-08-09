@@ -131,7 +131,7 @@ class UsersController {
     res.status(200).json({
       msg: "Logged in successfully",
       variant: "success",
-      payload: { user, token },
+      payload: { token, user },
     });
   }
   async getAllUsers(req, res) {

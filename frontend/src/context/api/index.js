@@ -1,16 +1,16 @@
-import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react'
-import { logout } from '../slices/authSlice';
+import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
+import { logout } from "../slices/authSlice";
 
 const baseQuery = async (args, api, extraOptions) => {
-  const { dispatch } = api
+  const { dispatch } = api;
   const rawBaseQuery = fetchBaseQuery({
     baseUrl: "http://localhost:8000/api",
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem("x-auth-token")
+      const token = localStorage.getItem("x-auth-token");
       if (token) {
-        headers.set('Authorization', `Bearer ${token}`)
+        headers.set("Authorization", `Bearer ${token}`);
       }
-      return headers
+      return headers;
     },
   });
 
@@ -19,16 +19,16 @@ const baseQuery = async (args, api, extraOptions) => {
   if (result.error) {
     const { status } = result.error;
     if (status === 401 || status === 403) {
-      dispatch(logout())
+      dispatch(logout());
     }
   }
   return result;
 };
-const baseQueryWithRetry = retry(baseQuery, { maxRetries: 0 })
+const baseQueryWithRetry = retry(baseQuery, { maxRetries: 0 });
 
 export const api = createApi({
-  reducerPath: 'myApi',
+  reducerPath: "myApi",
   baseQuery: baseQueryWithRetry,
-  tagTypes: ["User", "Blog"], 
+  tagTypes: ["User", "Blog", "Profile"],
   endpoints: () => ({}),
-})
+});
