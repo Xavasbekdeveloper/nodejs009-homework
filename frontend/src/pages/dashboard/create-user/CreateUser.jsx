@@ -64,8 +64,8 @@ const CreateUser = () => {
         </Form.Item>
 
         <Form.Item
-          label="lanme"
-          name="lanme"
+          label="lname"
+          name="lname"
           rules={[
             {
               required: false,
@@ -73,7 +73,7 @@ const CreateUser = () => {
             },
           ]}
         >
-          <Input placeholder="Enter lanme" />
+          <Input placeholder="Enter lname" />
         </Form.Item>
 
         <Form.Item

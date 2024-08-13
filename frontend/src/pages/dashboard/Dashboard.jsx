@@ -6,7 +6,7 @@ import {
   VideoCameraOutlined,
 } from "@ant-design/icons";
 import { Button, Layout, Menu, theme } from "antd";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useGetProfileQuery } from "../../context/api/userApi";
 import { useDispatch } from "react-redux";
 import { logout } from "../../context/slices/authSlice";
@@ -22,6 +22,7 @@ const Dashboard = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
 
   const handleLogOut = () => {
     dispatch(logout());
@@ -39,10 +40,11 @@ const Dashboard = () => {
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={["1"]}
+          defaultSelectedKeys={["manage-blog"]}
+          selectedKeys={pathname.split("/").slice(-1)[0]}
           items={[
             {
-              key: "1",
+              key: "manage-blog",
               icon: (
                 <NavLink to={"manage-blog"}>
                   <UserOutlined />
@@ -51,7 +53,7 @@ const Dashboard = () => {
               label: "Manage blog",
             },
             {
-              key: "2",
+              key: "create-blog",
               icon: (
                 <NavLink to={"create-blog"}>
                   <VideoCameraOutlined />
@@ -61,7 +63,7 @@ const Dashboard = () => {
             },
             data?.payload?.role === "owner" ? (
               {
-                key: "3",
+                key: "manage-user",
                 icon: (
                   <NavLink to={"manage-user"}>
                     <UserOutlined />
@@ -74,7 +76,7 @@ const Dashboard = () => {
             ),
             data?.payload?.role === "owner" ? (
               {
-                key: "4",
+                key: "create-user",
                 icon: (
                   <NavLink to={"create-user"}>
                     <VideoCameraOutlined />
