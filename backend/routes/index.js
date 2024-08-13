@@ -35,6 +35,15 @@ router.patch(
 );
 
 router.get("/api/products", [auth, adminMiddleware], ProductsController.get);
-router.post("/api/products", [upload.array("file")], ProductsController.create);
+router.post(
+  "/api/products",
+  [auth, adminMiddleware, upload.array("file")],
+  ProductsController.create
+);
+router.delete(
+  "/api/products/:id",
+  [auth, adminMiddleware],
+  ProductsController.delete
+);
 
 export default router;

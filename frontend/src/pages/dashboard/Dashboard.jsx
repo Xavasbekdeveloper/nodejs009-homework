@@ -87,6 +87,24 @@ const Dashboard = () => {
             ) : (
               <></>
             ),
+            {
+              key: "manage-product",
+              icon: (
+                <NavLink to={"manage-product"}>
+                  <UserOutlined />
+                </NavLink>
+              ),
+              label: "Manage product",
+            },
+            {
+              key: "create-product",
+              icon: (
+                <NavLink to={"create-product"}>
+                  <VideoCameraOutlined />
+                </NavLink>
+              ),
+              label: "Create product",
+            },
           ]}
         />
         <button

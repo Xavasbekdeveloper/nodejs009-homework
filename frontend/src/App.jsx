@@ -16,6 +16,12 @@ const ManageUser = lazy(() =>
 const CreateUser = lazy(() =>
   import("./pages/dashboard/create-user/CreateUser")
 );
+const CreateProduct = lazy(() =>
+  import("./pages/dashboard/create-product/CreateProduct")
+);
+const ManageProduct = lazy(() =>
+  import("./pages/dashboard/manage-product/ManageProduct")
+);
 
 const App = () => {
   const token = useSelector((state) => state.auth.token);
@@ -33,6 +39,8 @@ const App = () => {
             <Route path="create-blog" element={<CreateBlog />} />
             <Route path="manage-user" element={<ManageUser />} />
             <Route path="create-user" element={<CreateUser />} />
+            <Route path="create-product" element={<CreateProduct />} />
+            <Route path="manage-product" element={<ManageProduct />} />
           </Route>
         </Route>
       </Routes>
